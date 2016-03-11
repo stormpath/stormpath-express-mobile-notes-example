@@ -12,6 +12,15 @@ app.use(stormpath.init(app, {
   }
 }));
 
+app.get('/', function(req, res) {
+	var page = "<h1>Stormpath Notes</h1><p>A note taking app's backend.</p>"
+	page += "<h2>Endpoints:</h2><p><em>All endpoints require authentication.</em></p>"
+	page += '<h3>GET /notes</h3><p>Returns a json object like {"notes": "The notes the user saved"}</p>'
+	page += '<h3>POST /notes</h3><p>Takes a json object of {"notes": "The new notes the user wants to save"} and saves it to the user.</p>'
+	page += '<p>Returns a blank page with 200 OK if successful.'
+	res.send(page)
+})
+
 app.get('/notes', stormpath.loginRequired, function(req, res) {
 	res.json(req.user.customData.notes);
 })
@@ -25,5 +34,5 @@ app.post('/notes', stormpath.loginRequired, function(req, res) {
 
 // Once Stormpath has initialized itself, start your web server!
 app.on('stormpath.ready', function () {
-  app.listen(3000);
+  app.listen(process.env.PORT || 3000);
 });
