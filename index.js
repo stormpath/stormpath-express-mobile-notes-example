@@ -1,17 +1,20 @@
-var express = require('express');
-var stormpath = require('express-stormpath');
-var bodyParser = require('body-parser');
+var express = require('express')
+var stormpath = require('express-stormpath')
+var bodyParser = require('body-parser')
 
-var app = express();
+var app = express()
 
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
 app.use(stormpath.init(app, {
+	expand: {
+    customData: true,
+  },
   web: {
     produces: ['application/json']
   }
-}));
+}))
 
 app.get('/', function(req, res) {
 	var page = "<h1>Stormpath Notes</h1><p>A note taking app's backend.</p>"
@@ -23,17 +26,20 @@ app.get('/', function(req, res) {
 })
 
 app.get('/notes', stormpath.loginRequired, function(req, res) {
-	res.json({notes: req.user.customData.notes || ""});
+	res.json({notes: req.user.customData.notes || ""})
 })
 
 app.post('/notes', stormpath.loginRequired, function(req, res) {
-	var notes = req.body.notes || "";
-	req.user.customData.notes = notes;
-	req.user.save();
-	res.send("success")
+	if(!req.body.notes && typeof req.body.notes == "string") {
+		res.status(400).end()
+	}
+	
+	req.user.customData.notes = req.body.notes
+	req.user.customData.save()
+	res.status(200).end()
 })
 
 // Once Stormpath has initialized itself, start your web server!
 app.on('stormpath.ready', function () {
-  app.listen(process.env.PORT || 3000);
-});
+  app.listen(process.env.PORT || 3000)
+})
