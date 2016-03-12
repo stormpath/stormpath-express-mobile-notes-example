@@ -23,11 +23,11 @@ app.get('/', function(req, res) {
 })
 
 app.get('/notes', stormpath.loginRequired, function(req, res) {
-	res.json(req.user.customData.notes);
+	res.json({notes: req.user.customData.notes || ""});
 })
 
 app.post('/notes', stormpath.loginRequired, function(req, res) {
-	var notes = req.body.notes;
+	var notes = req.body.notes || "";
 	req.user.customData.notes = notes;
 	req.user.save();
 	res.send("success")
