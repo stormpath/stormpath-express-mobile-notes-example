@@ -21,19 +21,19 @@ app.get('/', function(req, res) {
 	page += "<h2>Endpoints:</h2><p><em>All endpoints require authentication.</em></p>"
 	page += '<h3>GET /notes</h3><p>Returns a json object like {"notes": "The notes the user saved"}</p>'
 	page += '<h3>POST /notes</h3><p>Takes a json object of {"notes": "The new notes the user wants to save"} and saves it to the user.</p>'
-	page += '<p>Returns a blank page with 200 OK if successful.'
+	page += '<p>Returns a blank page with 200 OK if successful, or 400 if the request was malformed.</p>.'
 	res.send(page)
 })
 
 app.get('/notes', stormpath.loginRequired, function(req, res) {
-	res.json({notes: req.user.customData.notes || ""})
+	res.json({notes: req.user.customData.notes || "This is your notebook. Edit this to start saving your notes!"})
 })
 
 app.post('/notes', stormpath.loginRequired, function(req, res) {
 	if(!req.body.notes && typeof req.body.notes == "string") {
-		res.status(400).end()
+		res.status(400).send("400 Bad Request")
 	}
-	
+
 	req.user.customData.notes = req.body.notes
 	req.user.customData.save()
 	res.status(200).end()
