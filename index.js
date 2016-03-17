@@ -21,7 +21,7 @@ app.get('/', function(req, res) {
 	page += "<h2>Endpoints:</h2><p><em>All endpoints require authentication.</em></p>"
 	page += '<h3>GET /notes</h3><p>Returns a json object like {"notes": "The notes the user saved"}</p>'
 	page += '<h3>POST /notes</h3><p>Takes a json object of {"notes": "The new notes the user wants to save"} and saves it to the user.</p>'
-	page += '<p>Returns a blank page with 200 OK if successful, or 400 if the request was malformed.</p>.'
+	page += '<p>Returns a blank page with 200 OK if successful, or 400 if the request was malformed.</p>'
 	res.send(page)
 })
 
@@ -30,7 +30,7 @@ app.get('/notes', stormpath.loginRequired, function(req, res) {
 })
 
 app.post('/notes', stormpath.loginRequired, function(req, res) {
-	if(!req.body.notes && typeof req.body.notes == "string") {
+	if(!req.body.notes || typeof req.body.notes != "string") {
 		res.status(400).send("400 Bad Request")
 	}
 
