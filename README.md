@@ -8,5 +8,4 @@ It runs on https://stormpathnotes.herokuapp.com/
 
 Branches:
 
-* develop - do all development here. 
-* master - deployed to https://stormpathnotes.herokuapp.com/ automatically. 
+* master - deployed to https://stormpathnotes.herokuapp.com/ automatically. Please submit a pull request or create a new branch if updating code. 
