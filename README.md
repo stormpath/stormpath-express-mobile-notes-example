@@ -11,3 +11,12 @@ It runs on https://stormpathnotes.herokuapp.com/
 Branches:
 
 * master - deployed to https://stormpathnotes.herokuapp.com/ automatically. Please submit a pull request or create a new branch if updating code. 
+
+
+Steps to Run :
+
+1: npm install
+
+2: Register account on stormpath and add given security credentials
+
+3: Run node index
