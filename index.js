@@ -27,12 +27,12 @@ app.get('/', function(req, res) {
 })
 
 // Endpoint for getting a user's notes. 
-app.get('/notes', stormpath.loginRequired, function(req, res) {
+app.get('/notes', stormpath.apiAuthenticationRequired, function(req, res) {
 	res.json({notes: req.user.customData.notes || "This is your notebook. Edit this to start saving your notes!"})
 })
 
 // Endpoint for retrieving a user's notes. 
-app.post('/notes', stormpath.loginRequired, function(req, res) {
+app.post('/notes', stormpath.apiAuthenticationRequired, function(req, res) {
 	if(!req.body.notes || typeof req.body.notes != "string") {
 		res.status(400).send("400 Bad Request")
 	}
